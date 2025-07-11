@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>智能助教系统 - 知识图谱生成与学习平台</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <i class="fa fa-graduation-cap"></i>
+        <h1>智能助教系统</h1>
+        <p class="subtitle">AI驱动的知识管理与学习辅助平台</p>
+      </div>
+      <nav class="header-nav">
+        <ul>
+          <li><a href="#features">产品功能</a></li>
+          <li><a href="#how-it-works">使用指南</a></li>
+          <li><a href="#faq">常见问题</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <section class="hero">
+      <div class="container">
+        <h2>智能知识图谱生成系统</h2>
+        <p>上传学习资料，自动生成知识图谱，提升学习效率</p>
+        <div class="hero-features">
+          <div class="feature-card">
+            <i class="fa fa-brain fa-2x"></i>
+            <h3>AI语义分析</h3>
+            <p>基于自然语言处理技术，自动提取文档中的关键知识点</p>
+          </div>
+          <div class="feature-card">
+            <i class="fa fa-sitemap fa-2x"></i>
+            <h3>可视化知识网络</h3>
+            <p>以图谱形式展示知识点关联，直观呈现知识结构</p>
+          </div>
+          <div class="feature-card">
+            <i class="fa fa-graduation-cap fa-2x"></i>
+            <h3>智能学习路径</h3>
+            <p>根据图谱推荐学习顺序，优化知识掌握效率</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="features-section">
+      <div class="container">
+        <h2 class="section-title">核心功能</h2>
+        <div class="feature-grid">
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fa fa-file-archive fa-3x"></i>
+            </div>
+            <h3>多格式文档支持</h3>
+            <p>支持PPT、PDF、Word、TXT等常见文档格式，一键上传自动解析</p>
+            <ul class="feature-list">
+              <li>• 智能识别文档章节结构</li>
+              <li>• 自动过滤无关内容</li>
+              <li>• 保留文档原始排版信息</li>
+            </ul>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fa fa-project-diagram fa-3x"></i>
+            </div>
+            <h3>动态知识图谱生成</h3>
+            <p>基于文档内容生成节点与关联边，支持自定义节点数量</p>
+            <ul class="feature-list">
+              <li>• 节点重要性智能排序</li>
+              <li>• 关联强度可视化展示</li>
+              <li>• 支持节点层级展开/折叠</li>
+            </ul>
+          </div>
+          
+          <div class="feature-item">
+            <div class="feature-icon">
+              <i class="fa fa-question-circle fa-3x"></i>
+            </div>
+            <h3>智能问答系统</h3>
+            <p>基于知识图谱生成相关问题，支持知识点专项测试</p>
+            <ul class="feature-list">
+              <li>• 问题难度自适应调节</li>
+              <li>• 实时答案反馈与解析</li>
+              <li>• 学习薄弱点智能标记</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="upload-section">
+      <div class="container">
+        <h2 class="section-title">上传学习资料</h2>
+        <p class="section-desc">系统将自动分析文档内容并生成知识图谱，支持PPT、PDF、Word、TXT格式</p>
+        
+        <div class="upload-area">
+          <i class="fa fa-cloud-upload fa-4x"></i>
+          <h3>上传学习资料</h3>
+          <p class="upload-tips">
+            <i class="fa fa-info-circle"></i> 
+            推荐上传完整章节文档以获得更准确的知识图谱，单个文件建议不超过50MB
+          </p>
+          
+          <label for="fileInput" class="upload-btn">
+            <i class="fa fa-file-text-o"></i>选择文件
+            <input id="fileInput" type="file" accept=".ppt,.pptx,.pdf,.docx,.doc,.txt">
+          </label>
+          
+          <!-- 文件状态提示区域 -->
+          <div id="fileStatus" class="file-status hidden">
+            <i class="fa fa-check-circle"></i>
+            <span id="fileNameDisplay"></span> 已准备就绪
+            <span class="file-size">文件大小: <span id="fileSize"></span></span>
+          </div>
+          
+          <div class="node-count-input">
+            <label for="nodeCountInput">期望节点数量（可选）:</label>
+            <input type="number" id="nodeCountInput" min="0" placeholder="0表示不限制">
+            <p class="input-tip">节点数量影响图谱详细程度，建议设置为10-50</p>
+          </div>
+          
+          <button id="generateBtn" class="generate-btn">
+            <i class="fa fa-cogs"></i>开始生成
+            <div class="btn-tooltip">点击后系统将分析文档并生成知识图谱</div>
+          </button>
+        </div>
+
+        <div id="progressContainer" class="hidden">
+          <div class="progress-card">
+            <div class="progress-header">
+              <h3>正在处理文档</h3>
+              <span id="progressPercentage">0%</span>
+            </div>
+            <div class="progress-bar">
+              <div id="progressBar"></div>
+            </div>
+            <div class="progress-message">
+              <i class="fa fa-spinner fa-spin"></i>
+              <p id="progressMessage">准备处理文档...
+                <span class="processing-step hidden">1/5 文档解析中</span>
+                <span class="processing-step hidden">2/5 知识点提取</span>
+                <span class="processing-step hidden">3/5 关联关系分析</span>
+                <span class="processing-step hidden">4/5 图谱结构构建</span>
+                <span class="processing-step hidden">5/5 可视化渲染</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="graph-section">
+      <div id="graphContainer" class="hidden">
+        <div class="graph-header">
+          <h3>知识图谱</h3>
+          <div class="graph-info">
+            <div class="graph-stats">
+            </div>
+            <div class="graph-controls">
+              <!-- 搜索框 -->
+              <div class="search-box">
+                <i class="fa fa-search"></i>
+                <input type="text" id="searchNode" placeholder="搜索知识点...">
+              </div>
+              
+              <!-- 节点筛选 -->
+              <div class="filter-group">
+                <label>掌握程度:</label>
+                <div class="filter-buttons">
+                  <button class="filter-btn active" data-status="all">全部</button>
+                  <button class="filter-btn" data-status="mastered">已掌握</button>
+                  <button class="filter-btn" data-status="partial">部分掌握</button>
+                  <button class="filter-btn" data-status="unmastered">未掌握</button>
+                </div>
+              </div>
+              
+              
+              <!-- 节点数量设置 -->
+              <div class="node-count-input">
+                <label for="graphNodeCountInput">节点数量:</label>
+                <input type="number" id="graphNodeCountInput" min="0" placeholder="0表示不限制">
+                <div class="input-tip">调整节点数量可改变图谱详细程度</div>
+              </div>
+              
+              <!-- 重新生成按钮 -->
+              <button id="regenerateBtn" class="action-btn">
+                <i class="fa fa-refresh"></i> 重新生成
+                <div class="btn-tooltip">使用当前设置重新生成知识图谱</div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="networkContainer"></div>
+
+        <div class="graph-footer">
+          <div class="legend">
+            <h4>图例说明</h4>
+            <div class="legend-items">
+              <div class="legend-item">
+                <div class="color mastered"></div>
+                <span>已掌握 <span class="example-node"></span></span>
+              </div>
+              <div class="legend-item">
+                <div class="color partial"></div>
+                <span>部分掌握 <span class="example-node"></span></span>
+              </div>
+              <div class="legend-item">
+                <div class="color unmastered"></div>
+                <span>未掌握 <span class="example-node"></span></span>
+              </div>
+            </div>
+          </div>
+          <div class="stats">
+            <span>节点: <span id="nodeCount">0</span></span>
+            <span>边: <span id="edgeCount">0</span></span>
+            <span>关键节点: <span id="keyNodes">0</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <section class="quiz-section">
+      <div id="quizContainer" class="hidden">
+        <div class="quiz-header">
+          <h3>知识测试</h3>
+          <div class="quiz-meta">
+            <span>当前知识点: <span id="currentTopic">暂无</span></span>
+            <span>测试进度: <span id="quizProgress">0/0</span></span>
+          </div>
+        </div>
+        <div class="quiz-body">
+          <!-- 新增：问题生成提示容器 -->
+          <div id="questionGenerating" class="hidden">
+            <div class="notification">
+              <i class="fa fa-spinner fa-spin"></i>
+              <span>问题正在生成中，请稍候... (AI分析知识点关联性中)</span>
+            </div>
+          </div>
+          
+          <!-- 历史对话区域 -->
+          <div id="chatHistory" class="chat-history">
+            <h4>测试历史</h4>
+            <div class="history-empty hidden">
+              <i class="fa fa-history"></i>
+              <p>暂无测试记录，点击图谱节点开始测试</p>
+            </div>
+            <div class="history-list"></div>
+          </div>
+          
+          <div id="questionCard" class="hidden">
+            <div class="question-card">
+              <div class="question-header">
+                <i class="fa fa-question-circle"></i>
+                <h4>问题 <span id="questionNumber">1</span></h4>
+              </div>
+              <div class="question-body">
+                <p id="currentQuestion">请描述计算机网络中OSI七层模型的主要功能划分。</p>
+                <div class="question-hint hidden">
+                  <i class="fa fa-lightbulb"></i>
+                  <p>提示：该模型从下至上分别为物理层、数据链路层...每一层负责不同的网络功能</p>
+                </div>
+              </div>
+              
+              <div class="answer-area">
+                <h4>你的回答</h4>
+                <textarea id="userAnswer" placeholder="请输入你的回答..."></textarea>
+                <div class="answer-tips">
+                  <i class="fa fa-info-circle"></i>
+                  <p>回答越详细越有助于系统评估掌握程度，建议使用专业术语</p>
+                </div>
+                <button id="submitAnswer" class="generate-btn">
+                  <span id="submitText">提交答案</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <div id="answerFeedback" class="feedback-card hidden">
+            <div class="feedback-header">
+              <i class="fa fa-check-circle"></i>
+              <h4 id="feedbackTitle">回答正确</h4>
+            </div>
+            <div class="feedback-body">
+              <p id="feedbackText">你的回答准确覆盖了OSI七层模型的核心功能，特别是对网络层和传输层的区分描述清晰。</p>
+              <!-- 删除详细解析部分 -->
+              <!-- <div class="feedback-explanation">
+                <h5>详细解析</h5>
+                <p>OSI七层模型从下至上分别为：物理层（传输比特流）、数据链路层（帧传输与错误检测）、网络层（路由与寻址）...（完整解析内容）</p>
+              </div> -->
+            </div>
+            <div class="feedback-actions">
+              <button id="nextQuestion" class="action-btn">下一个问题</button>
+            </div>
+          </div>
+          
+          <div id="noQuestion">
+            <i class="fa fa-question-circle fa-4x"></i>
+            <h4>请先选择一个知识点</h4>
+            <p>在知识图谱中点击一个节点，开始针对该知识点的专项测试</p>
+            <p class="hint-text">提示：节点越大表示在文档中重要性越高，点击关键节点可获得更多相关问题</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="chat-section">
+  <div class="container">
+    <h2 class="section-title">智能助手</h2>
+    <div class="chat-box">
+      <div class="chat-history" id="qaHistory"></div>
+      <div class="chat-input">
+        <textarea id="qaInput" placeholder="请输入您的问题，如：图神经网络的核心思想是？"></textarea>
+        <button id="qaSubmitBtn">发送</button>
+      </div>
+      <div class="chat-feedback" id="resourceRecommend"></div>
+    </div>
+  </div>
+</section>
+<script>
+  const qaSubmitBtn = document.getElementById('qaSubmitBtn');
+  const qaInput = document.getElementById('qaInput');
+  const qaHistory = document.getElementById('qaHistory');
+  const resourceRecommend = document.getElementById('resourceRecommend');
+
+  // 新增：思考中提示元素
+  let thinkingMsg = null;
+
+  qaSubmitBtn.addEventListener('click', () => {
+    const question = qaInput.value.trim();
+    if (!question) return;
+    // 显示用户问题（去除首行空行）
+    const userMsg = `<div class='msg user-msg'><strong>你：</strong> ${question}</div>`;
+    qaHistory.innerHTML += userMsg;
+    qaInput.value = '';
+    // 显示“正在思考中……”
+    thinkingMsg = document.createElement('div');
+    thinkingMsg.className = 'msg thinking-msg';
+    thinkingMsg.innerHTML = `<i class="fa fa-spinner fa-spin"></i> 正在思考中……`;
+    qaHistory.appendChild(thinkingMsg);
+    qaHistory.scrollTop = qaHistory.scrollHeight;
+    // 判断是否上传文档
+    const requestData = {
+        question: question,
+        topology_id: currentTopologyId || '',  // 若无则为 ""
+    };
+
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(requestData)
+    })
+    .then(res => res.json())
+    .then(data => {
+      // 隐藏“正在思考中……”
+      if (thinkingMsg) {
+        thinkingMsg.remove();
+        thinkingMsg = null;
+      }
+
+      if (data.status === 'success') {
+        // 显示AI回答，后跟来源
+        let sourceText = '';
+        if (data.source === 'document') {
+          sourceText = `<br><span style="color:#888;font-size:13px;font-style:italic;">来源：文档</span>`;
+        } else if (data.source === 'web') {
+          sourceText = `<br><span style="color:#888;font-size:13px;font-style:italic;">来源：网络</span>`;
+        }
+        const aiMsg = `<div class='msg ai-msg'><strong>智能助手：</strong><br>${data.answer}${sourceText}</div>`;
+        qaHistory.innerHTML += aiMsg;
+
+        if (data.resources && data.resources.length > 0) {
+          let links = `<div class="resource-list"><h4>📚 推荐学习资源：</h4><ul>`;
+          for (const res of data.resources) {
+            links += `<li><a href='${res.url}' target='_blank'>${res.title}</a> - ${res.snippet}</li>`;
+          }
+          links += `</ul></div>`;
+          resourceRecommend.innerHTML = links;
+        } else {
+          resourceRecommend.innerHTML = '';
+        }
+      } else {
+        qaHistory.innerHTML += `<div class='msg error-msg'>⚠️ 出错：${data.message}</div>`;
+      }
+    });
+  });
+</script>
+<style>
+  .chat-box {
+    background: #f8fafc;
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(52,152,219,0.08);
+    padding: 24px 20px 16px 20px;
+    margin-bottom: 32px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .chat-history {
+    min-height: 120px;
+    max-height: 350px;
+    overflow-y: auto;
+    padding-bottom: 8px;
+  }
+  .msg {
+    margin: 18px 0 10px 0;
+    padding: 12px 18px 16px 18px; /* 上内边距减小，去除首行空白 */
+    border-radius: 10px;
+    font-size: 16px;
+    line-height: 1.8;
+    word-break: break-all;
+    white-space: pre-line;
+    box-shadow: 0 1px 4px rgba(52,152,219,0.04);
+    transition: background 0.2s;
+  }
+  .user-msg {
+    background: #f3f4f6;
+    color: #222;
+    border-left: 5px solid #3498db;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  .ai-msg {
+    background: #eaf6ff;
+    color: #1a355b;
+    border-left: 5px solid #2ecc71;
+    font-weight: 500;
+    position: relative;
+    font-size: 16px;
+  }
+  .ai-msg strong {
+    color: #2176ae;
+    font-weight: bold;
+    font-size: 17px;
+  }
+  .ai-msg em, .user-msg em {
+    color: #e67e22;
+    font-style: normal;
+    font-weight: bold;
+    background: #fffbe6;
+    padding: 0 4px;
+    border-radius: 3px;
+  }
+  .ai-msg code, .user-msg code {
+    background: #f4f4f4;
+    color: #c7254e;
+    font-family: 'Fira Mono', 'Consolas', monospace;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 15px;
+  }
+  .ai-msg pre, .user-msg pre {
+    background: #f4f4f4;
+    color: #333;
+    font-family: 'Fira Mono', 'Consolas', monospace;
+    padding: 12px;
+    border-radius: 6px;
+    margin: 10px 0;
+    font-size: 15px;
+    overflow-x: auto;
+  }
+  .ai-msg blockquote, .user-msg blockquote {
+    background: #f0f7ff;
+    border-left: 4px solid #3498db;
+    margin: 10px 0;
+    padding: 10px 16px;
+    color: #555;
+    border-radius: 6px;
+    font-style: italic;
+    font-size: 15px;
+  }
+  .thinking-msg {
+    color: #888;
+    font-style: italic;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    background: #f8fafc;
+    border-left: 4px solid #95a5a6;
+    padding: 10px 14px;
+    border-radius: 8px;
+  }
+  .thinking-msg i {
+    color: #3498db;
+    margin-right: 6px;
+  }
+  .resource-list {
+    background: #f6fafd;
+    border-radius: 8px;
+    padding: 14px 18px 10px 18px;
+    margin: 18px 0 0 0;
+    box-shadow: 0 1px 4px rgba(52,152,219,0.04);
+  }
+  .resource-list h4 {
+    color: #2176ae;
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  .resource-list ul {
+    padding-left: 18px;
+    margin: 0;
+  }
+  .resource-list li {
+    margin-bottom: 7px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #1a355b;
+  }
+  .resource-list a {
+    color: #2980b9;
+    text-decoration: underline;
+    font-weight: 500;
+    margin-right: 4px;
+  }
+  .resource-list a:hover {
+    color: #e67e22;
+  }
+  .error-msg {
+    background: #fff0f0;
+    color: #e74c3c;
+    border-left: 5px solid #e74c3c;
+    font-size: 15px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 12px 0;
+  }
+</style>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-info">
+          <h3>智能助教系统</h3>
+          <p>AI驱动的知识管理平台，帮助用户高效学习与知识梳理</p>
+          <div class="social-links">
+            <a href="#"><i class="fa fa-weixin"></i></a>
+            <a href="#"><i class="fa fa-weibo"></i></a>
+            <a href="#"><i class="fa fa-github"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-links">
+          <h4>快速链接</h4>
+          <ul>
+            <li><a href="#features">产品功能</a></li>
+            <li><a href="#how-it-works">使用指南</a></li>
+            <li><a href="#faq">常见问题</a></li>
+            <li><a href="#">更新日志</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-links">
+          <h4>支持中心</h4>
+          <ul>
+            <li><a href="#">帮助文档</a></li>
+            <li><a href="#">联系我们</a></li>
+            <li><a href="#">隐私政策</a></li>
+            <li><a href="#">服务条款</a></li>
+          </ul>
+        </div>
+      </div>
+      <p>© 2025 智能助教系统 | 知识图谱学习平台 | 技术支持：AI知识工程实验室</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  
+  <div id="contextModal" class="context-modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">原文上下文</h3>
+        <button id="closeContextModal" class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body" id="contextContent">
+        <div class="context-loading">
+          <i class="fa fa-spinner fa-spin"></i>
+          <p>加载原文上下文... (该功能需文档解析完成后可用)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="nodeActionModal" class="modal-dialog hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">节点操作</h3>
+        <button id="closeNodeActionModal" class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="node-info">
+          <h4 id="modalNodeName">知识点名称</h4>
+          <p id="modalNodeDesc">知识点描述信息将显示在这里</p>
+        </div>
+        <p>请选择操作：</p>
+        <div class="action-buttons">
+          <button id="startQuizBtn" class="action-btn">
+            <i class="fa fa-question-circle"></i> 进入问答模式
+          </button>
+          <button id="markNodeBtn" class="action-btn">
+            <i class="fa fa-clipboard-check"></i> 标记掌握状态
+          </button>
+          <button id="deleteNodeBtn" class="action-btn danger">
+            <i class="fa fa-trash"></i> 删除节点
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
